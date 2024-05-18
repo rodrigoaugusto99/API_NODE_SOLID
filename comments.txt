@@ -1,0 +1,117 @@
+init -y 
+
+src - server.ts
+
+typescript, types/node, tsx, tsup -d
+
+npx tsc --init   - tsconfig.json es2020
+
+fastify
+
+server.ts e app.ts
+
+.gitignore
+
+scripts
+
+"scripts": {
+    "dev": "tsx watch src/server.ts", - p startar em desenvolvimento, transformando ts em js rapidinho
+    "start": "node build src/server.js", - startar pra producao - executar node e executar servidor na 
+    pasta js dentro da pasta build
+    "build": "tsup src --out-dir build" - pega codigo no src, converte js e joga no /build
+  },
+
+  _____________________________________________________________
+
+.npmrc - save-exact=true
+
+com isso, permite fixar as versões exatas das dependências instaladas em um projeto. 
+Isso garante a estabilidade e consistência do ambiente de desenvolvimento e produção, 
+prevenindo problemas de compatibilidade e incompatibilidade entre as versões das dependências. 
+Além disso, esta configuração ajuda a evitar problemas de segurança, pois impede a 
+instalação de versões vulneráveis das dependências.
+
+
+_____________________________________________________________
+
+
+vasriaveis ambiente:
+
+variaveis que teremos informacoes diferentes, valores diferentes dado o ambiente da nossa aplciacao,
+se estiver executando em testes, producao, desenvovimento, stagiing, essas variaveis podem ter valores
+diferentes.
+
+.env com essas variaveis
+.env.example p qnd aguem baixar o projeto, ela saber qquais variaveis ela precisa setar,
+ate pq o .env vai pro .gitignore
+
+-pra carregar essas variaveis ambiente dentro do projeto - 
+
+npm i dotenv - faz o parse, carrega o arquivo .env e transforma em variaveis ambiente
+dentro do node que conseguimsoa cessar via process.env.NODE_ENV
+
+-pra fazer o carregamento de umm jeito mais charmoso, nao tao bruto, tentando acessar
+diretamente o process.env:
+
+src/env/index.ts
+
+nesse arquivo, inves de apenas carregar as variaveis ambiente com import dotenv/config, 
+tbm vms validar as variaveis ambiente, pois tem variaveis de ambiente na nossa aplicacao que sao
+obrigatorias estarem existindo no momento que executamos/iniciamos a nossa apliciacao, por exemplo,
+pra aplicacao ser inicializada, tem que ter uma url de banco de dados setada
+
+npm i zod
+
+schema p validar, os 3 ambientes sao:
+ dev, test e production, um enum, botamos ate um valor default
+ port tbm, z.coerce.number(), caso o valor da porta veio com string, 
+ nao tem problema, o coerce transfortma em number. tbm podmos botar default.
+
+ validando - schema.safeParse(process.env)
+-isso ve se o process.env corresponde ao schema que fizemos anteriormente.
+
+pra ver se validou ou nao, podemos pegar o resultado desse safeParse.
+se for false o _env.success, entao pegamos o _env.error e printamos de forma formatadinha
+
+e lancamos um thhrow error pra parar a aplicacao toda.
+
+se a _env.success foi true, entao exportamos essa variavel privada
+export const env = _env
+agora podemos usar em qlqr lugar da aplicacao o env.PORT ou env.NODE_ENV
+
+_____________________________________________________________
+
+eslint da rocketseat
+
+npm i eslint @rocketseat/eslint-config -D
+
+criamos a pasta .eslintrc.json p ccolcoar o extends de node.
+
+queremos que esse eslint ignore algumas pastas como build e node_modules.
+entao criar 
+.eslintignore
+
+
+_____________________________________________________________
+no tsconfig.json:
+
+"baseUrl": "./", 
+"paths": {
+  "@/*": ["./src/*"]
+},  
+
+se tivermos la no escafundoh do judas, se quisermos pegar algo la de fora,
+inves de fazer../../../../, podemos tacar um @ logo.
+
+
+
+
+
+
+
+
+
+
+
+
+

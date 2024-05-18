@@ -240,3 +240,54 @@ Prisma Studio is up on http://localhost:5555
 ao rodar:
 -  npx prisma studio
 conseguimos ter acesso ao banco, as tabelas, de forma facil em uma interface
+
+
+_____________________________________________________________
+
+
+
+
+docker compose - bota aquelas informacoes que usammos no inicio da criacao do container,
+e quem usar a nossa aplicacao eh so rodar:\
+
+ docker compose up -d
+
+(-d em modo background, sem 
+mostrar os logs por exemplo.)
+
+pra DELETAR o container e os bancos de dados:
+
+ docker compose down
+
+ pra apenas stoppar o container:
+
+ docker compose stop
+
+
+se deletar tudo ou algo do tipo, lembrar de roda as migrations de novo.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

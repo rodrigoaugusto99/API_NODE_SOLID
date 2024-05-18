@@ -104,12 +104,79 @@ se tivermos la no escafundoh do judas, se quisermos pegar algo la de fora,
 inves de fazer../../../../, podemos tacar um @ logo.
 
 
+_____________________________________________________________
+
+Fundamentos do Prisma ORM
+
+2a camada - query builders, tipo knex
+
+knex converte pra sql, executa aquela query no nosso banco de dados mas nao tem controle do tipo, 
+saber se realmente aquela tabela existe no banco de dados, nois temos que fazer  atipagem dele na mao.
+e ai teria que informar tanto a nivel de banco de dados quanto na nossa aplicacao essas coisas do tipo,
+os tipos, opcional ou nao, etc.
+
+3o nivel de abstracao - maior - ORMs
+
+prisma, typeorm, sequelize.
+
+prisma ehh o melhor pq diminui muito o trabalho que a gente tem principalmente na parte de duplicidade.
+integracao mt boa com typescript. Se temos uma tabela users e tem 10 campos, o prisma compreende a existencia da tabela
+e deduz de forma automatizada, a tabela, os campos, e no mesmo momentos que estamos digitando, o prisma consegue te avisar
+se tem algo errado ou nao. Migrations tbm sao automatizados. Nao precisamos escrever as migrations tipo: arquivo especifico
+pra adicionar coluna na tabela. Apenas precisamos alterar o arquiovo que repreesenta a estrutura no banco de dados
+e o prisma automaticamente faz a migration.
 
 
+npm i prisma -D
+
+instalar em desenvolvimento pois, apesar de usarmos o banco de dados em producao, esse prisma que estamos instalando ainda nao eh 
+nao eh o carinhha que faz o acesso ao banco, ehh apenas uma interface de lina de comando
+
+npx prisma init
+
+isso inicializa a parte de conexao com banco de daods na nossa aplicacao
+
+o arquivo schema.prisma vai ser uma represenatacao das tabelas que vamos ter no banco de dados.
+
+mongo chama de colection, sql chama de table, entao no prismo a gente chama de MODEL
+
+nosso primeiro model no schema.prisma:
+
+model User {
+  id    String @id @default(uuid())
+  name  String
+  email String @unique
+
+  @@map("users")
+}
+
+npx prisma generate
+
+eai, podemos ver la no node_modules, no prisma, o arquivo index.d.ts,
+la aparece a tipagem desse User, (export type), tbm aparece varios
+metodos feitos automaticamente como findByUnique, que no caso podemos
+usar com o id e o email, etc.
+
+-agora pra trabalhar de fato com o prisma, temos que instalar o 
+
+npm i @prisma/client
+
+esse sim eh dependencia de producao, pois ehh ele que vms usar pra ACESSAR o banco de dados.
+
+dessa forma, veja o seguinte exemplo:
 
 
+dps de instanciarmos o PrismaClient() como "prisma",
 
+prisma.user.create({
+  data: {
+    name: 'Rodrigo',
+    email: 'rodrigo@prisma.com',
+  },
+})
 
+tudo tipado certinho, nao podemos colocar number no lugar de string, tudo tem sugestao de acordo com
+a tipagem....prisma eh lgl dms
 
 
 

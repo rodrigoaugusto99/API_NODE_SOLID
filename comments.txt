@@ -178,7 +178,65 @@ prisma.user.create({
 tudo tipado certinho, nao podemos colocar number no lugar de string, tudo tem sugestao de acordo com
 a tipagem....prisma eh lgl dms
 
+_____________________________________________________________
+
+postgres com docker
+
+meu coker ta no WSL.
+
+docker run --name api_node_solid_pg bitnami/postgresql
+esse ehh o comando, mas vms fzr umas configuracoezinhahs antes de rodar o comando
+
+docker run --name api_node_solid_pg -e POSTGRESQL_USERNAME=docker -e POSTGRESQL_PASSWORD=docker 
+-e POSTGRESQL_DATABASE=apisolid -p 5432:5432 bitnami/postgresql
+
+pronto !
+
+se dermos um stop (crtl c), o docker manteve esse container em cache, entao conseguimos subir ela de novo
+
+se rodar docker ps, aparece todos os container atuais rodando
+se rodar docker ps -a, mostra todos os container que ja criamos em algum momento.
+
+se quisermos startar aquele nosso container, so colocar:
+  - docker start api_node_solid_pg
+que foi o nome que
+a gente deu na criacao do container inicialmente.
+
+e pra desligar o container:
+  - docker stop api_node_solid_pg
 
 
+no .env, o prisma ja colocou automaticamente isso:
+
+DATABASE_URL="postgresql://johndoe:randompassword@localhost:5432/mydb?schema=public"
+
+alteramos para
+
+DATABASE_URL="postgresql://docker:docker@localhost:5432/apisolid?schema=public"
 
 
+---testando que o container e o postgres esta funcionando.:
+
+npx prisma migrate dev - esse comando roda a migration.
+Como eh a primeira vez que rodamos e apenas criamos a 
+tabela User(users), entao o terminal vai perguntar o nome
+dessa migratione  a gente coloca simplesmente create users.
+
+a mensagem que aparece:
+
+migrations/
+  └─ 20240518220953_create_users/
+    └─ migration.sql
+
+Your database is now in sync with your schema.
+
+beekeeper? posticon? NADA DISSO ! o prisma tem o prisma studio
+
+reda@DESKTOP-2NS8NO9:/mnt/c/documentos/projetos/web/rocketseat/formacao_node/api-solid-03$ npx prisma studio
+Environment variables loaded from .env
+Prisma schema loaded from prisma\schema.prisma
+Prisma Studio is up on http://localhost:5555
+
+ao rodar:
+-  npx prisma studio
+conseguimos ter acesso ao banco, as tabelas, de forma facil em uma interface

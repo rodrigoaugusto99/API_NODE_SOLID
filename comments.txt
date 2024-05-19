@@ -350,6 +350,46 @@ por exemplo, no nosso prisma.user.create({}), aconteceu um log,
 'INSERT INTO .....'
 
 
+_____________________________________________________________
+
+Iremos organziar melhor nosso codigo, mas tenha em mente que nao eh
+criar mais pastas que vai deixar nosso codigo mais escalavel e manuntenviel.
+Mas esse eh o proposito.
+
+Controller eh  um nome dado pra essa funcao que fizemos agora.
+Uma funcao que lida com entrrada e saida de dados
+
+
+a funcao dentro da rota, vira uma funcao exportada na pasta controllers.
+a rota que estava em app.ts, jogamos em outra arquivo, que eh uma
+funcao exportada contendo todas as rotas. e no app simpelsmente registramos
+essa rotas com app.register
+
+ou seja, no app.ts registramos as rotas.
+nas rotas, tem cada rota com o controller sendo chamado
+nos controllers, tem as regras de negocio.
+
+jaja vms desestrutruar tambem esse controller.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

@@ -150,6 +150,12 @@ model User {
   @@map("users")
 }
 
+esse @@map("users)
+eh so pra renomear a tabela la no banco pra seguirmos o
+padrao de letra minusucla e plural.
+o @ unico ja se refere a tal coluna
+o @@ juntos se referem a tabela como um todo.
+
 npx prisma generate
 
 eai, podemos ver la no node_modules, no prisma, o arquivo index.d.ts,
@@ -289,10 +295,38 @@ que tem chheckin, ainda fala a data exata.
 
 ao fzr essas mudancas no schema.prisma, so dar o migrate dev.
 
+_____________________________________________________________
 
 
+RELACIONAMENTOS.
 
+ainda nao fizemos as chaves estrangeiras.
 
+repare que na tabela de check-ins precismaos colocar 
+as chaves erstrangeiras referentes a user e gym, pois
+um checkin foi feito por um usuario e um checkin foi 
+feito em uma academia.
+
+no caso, seria entao user_id String e gym_id String.
+mas dessa forma o prisma nao vai saber que existe tal
+relacionamento. 
+
+vamos colocar entao user User na tabela de checkin.
+ao darmos ENTER, ja que estamos com a extensao do prisma, e
+ja que estamso com aquele onSave true no json config,
+entao automaticamente sera criado a linha:
+
+user    User   @relation(fields: [user_id], references: [id])
+
+que diz que o campo user_id se refere ao id do User. 
+
+usamos user_id e gym_id por padrao.
+e no caso do checkIns, usamso common case como padrao.
+pois vamos usar isso no codigo javascript.
+
+-no prisma studio podemos manipular essas foreign keys tbm, 
+podemos setar um usuario praquele checkin, ou um gym praquele checkin,
+etc.
 
 
 

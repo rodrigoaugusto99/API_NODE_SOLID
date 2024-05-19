@@ -267,14 +267,27 @@ pra DELETAR o container e os bancos de dados:
 se deletar tudo ou algo do tipo, lembrar de roda as migrations de novo.
 
 
+_____________________________________________________________
 
+criando schema com 
 
+vms criar as tabelas de acordo com os requisitos funcionais.
+percebe-se nos req. funcionais que ha entidades que aparecem comumente, 
+como academias, usuarios, check-ins, que sao entitades que com certeza
+teremos que persistir em alguma estrutura de dados, provavelmente 
+banco de dados
 
+models p checkin e gym.
 
+gym vai ter latitude e longidutde obrigatorio por motivos de seguranca,
+por ex pra evitar chheckin por outra pessoa, ou checkar muito longe, ou usar 2
+celulares, esses tipos de coisas
 
+o validated_at no checkin ta mais interessante do que um booleano is_validated,
+porque eh como se fosse um atributo q fala duas coisas, se existir, alem de falar
+que tem chheckin, ainda fala a data exata.
 
-
-
+ao fzr essas mudancas no schema.prisma, so dar o migrate dev.
 
 
 

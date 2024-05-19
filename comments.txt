@@ -328,9 +328,26 @@ pois vamos usar isso no codigo javascript.
 podemos setar um usuario praquele checkin, ou um gym praquele checkin,
 etc.
 
+_____________________________________________________________
 
+primeiramente, pra testar, foi feito um insert basico. 
 
+no app.ts, um app.post simples
 
+que faz:
+validacao do body 
+criacao do usuario no banco com os dados.
+
+o que foi feito tambem - tiramos a instancia do prisma e
+fizemos em outro arquivo /lib/prisma.ts
+
+nesse arquivo, alem de fazer a instanciacao do PrismaClient
+e exportar ele pra aplicacao inteira, tbm ativamos o "log",
+para, caso estejamos em ambiente de dev, os logs mostrem
+as querys que o prisma faz automaticcamente quando mandamos.
+
+por exemplo, no nosso prisma.user.create({}), aconteceu um log,
+'INSERT INTO .....'
 
 
 

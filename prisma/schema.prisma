@@ -14,11 +14,11 @@ datasource db {
 }
 
 model User {
-  id             String   @id @default(uuid())
-  name           String
-  email          String   @unique
-  password_hashh String
-  created_at     DateTime @default(now())
+  id            String   @id @default(uuid())
+  name          String
+  email         String   @unique
+  password_hash String
+  created_at    DateTime @default(now())
 
   checkIns CheckIn[]
 

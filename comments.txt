@@ -371,15 +371,40 @@ nos controllers, tem as regras de negocio.
 
 jaja vms desestrutruar tambem esse controller.
 
+_____________________________________________________________
 
+npm i bcryptjs - para criptografar senha
+npm i -D @types/bcryptjs - para tipar, pois a lib eh em js
 
+import { hash } from 'bcryptjs'
 
+criamos o password_hash com base no password,
+hash(passowrd, 6)
 
+com isso, o resultado eh criptografado, 6 rounds
+significa 6 rodadas de criptografia, mt bom.
 
+eai, passamos esse resultado pro parametro da senha 
+no metodo de criar usuario no prisma.
+repare que como o name, email e password_hash sao o nome
+dos parametros/colunas no prisma, entao nao precisa colocar
+name: name, basta name,
 
+tbm podemos aproveitar e validar se o email ja existe.
+no prisma o email e id sao unicos,  pois tao como @unique e @id.
+entao podemos usar o findUnique( { email } ) do prisma p fzr
+a checagem no banco
 
+Percebemos uma coisa: esse eh core do registro de usuario, ou seja,
+qualquer usuario que formos criar, tera aquela validacao,
+aquela criptografia, aquela checagem, aquele metodo de criar, etc.
 
+independente se os dados vieram da requisicao, ou se por algum motivo
+vier de outro lugar, como por exemplo uma integracao em que o os dados
+do usuario para a criacao dele chegue na nossa aplicacao a partir de outro
+lugar.
 
+entao essa parte que nao muda, iremos tirar.,
 
 
 

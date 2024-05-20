@@ -404,17 +404,54 @@ vier de outro lugar, como por exemplo uma integracao em que o os dados
 do usuario para a criacao dele chegue na nossa aplicacao a partir de outro
 lugar.
 
-entao essa parte que nao muda, iremos tirar.,
+entao essa parte que nao muda, iremos tirar.
+
+_____________________________________________________________
 
 
+Vamos desacoplar completamente esse core de criacao de usuario.
+
+vamos entao criar uma pasta chamada use-cases, e o arquivo register.ts
 
 
+Nesse arquivo de caso de uso, vai ficar a criptografia e
+as anipulacoes com o prisma. repare que tiramos o "reply" da
+checagem de erro, pois ele se refere apenas ao fastify, e
+o fastify se refere a requisicao http, mas como ja falamos anteriormente, 
+um usuario posteriormente pode ser criado nao por uma requisicao http, mas
+por um sistema de messageria, ou uma integracao, etc.
+
+entao essa checagem de email ja em uso, iremos apenas lancar um erro,
+
+Essa funcao que fizemos chamamos de registerUseCase.
+
+No Controller, agora sim, a gente apenas recebe os dados e devolve os dados.
+sem precisar mexer com bcrypt ou prisma.
+
+e como la lance um erro, a gente usa um try-catch.
+
+ try {
+    await registerUseCase({
+        name, 
+        email, 
+        password
+    })
+} catch (error) {
+    return reply.status(409).send()
+}
+
+se o controller chamou o register de caso de uso e deu um erro, nao tem problema,
+a gente pega ali no catch.
+
+(questao de mensagens de erro, ainda veremos mais pra frente uma forma melhhor
+de lidar com isso.)
 
 
-
-
-
-
+RESUMINDO: separamos a funcionalidade logica em si, da parte que eh especficia
+da camada hhttp, ou seja, da camada de lidar com requisicao e resposta do nosso
+framework (fastify.). Agora, em qualquer lugar da aplicacao podemos chamar o caso 
+de uso de criar usuario mandando email, nome e senha. Nao precismaos nos preocupar 
+em criar o usuario apenas quando for assim atraves de requisicao http
 
 
 

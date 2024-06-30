@@ -704,9 +704,20 @@ Repare que a autenticacao ta bem pobre, apenas estamos validando o email e senha
 Porem tbm temos que validar o usuario nas suas proximas requisicoes dentro da aplicacao.
 Pra isso, no futuro, usaremos jwt p usar tokens
 
+_____________________________________
 
+Uma regra dos testes unitarios eh que cada teste deve ter seu contexto totalmente isolado. Por isso
+que, em cada teste, eh instanciado um repositorio do "zero".
 
+Se instanciarmos esse repositorio la em cima no describe ou fora do escopo, todos os testes vao misturar 
+os contextos, e testes unitariios nao podem acontecer isso.
 
+Entao, vamos usar o beforeEach para inciializar o repositorio e o use-case uma vez antes
+de cada teste.
+
+Entao la em cima fica let usersRepository: InMemoryRepository e let sut: AUthenticateUSeCase ou RegisterUseCase.
+dessa forma, criamos e tipamos.
+dentro do beforEACH, ai sim vms atribuir corretamente
 
 
 

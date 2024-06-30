@@ -596,3 +596,59 @@ condicionais a gente faz um throw error, um throw no proprio error que veio no c
 setErrorHandler do fastify pra lidar globalmente com esses erros, eh como se fosse uma pia. A gente joga os restos de comida
 do prato fora, mas caso sobrar algo, mesmo assim nao vai descer no cano, pois tem uma rede ali no ralo pra pegar os restinhos
 de comida por precaucao.
+
+
+________________________
+
+testes
+
+npm i vitest -d
+npm i vite-tsconfig-paths - pro vitest entender aqwueles paths q configuramos no tsconfiig
+
+pra entender de fato, tem que colocar isso nos plugins la no vite.config.ts
+
+fazer os scripts (vitest run eh so um, vitest sozinho eh tipo watch)
+
+describre serve pra categorizar os testes que tiverem dentro dele
+
+Comecando fazendo o teste de hash por exemplo, nois instanciamos o RegisterUseCase,
+instanciamos tbm o prismaRepository, e chamamos a funcao execute. 
+COmo saber se a senha foi hasheada? uma coisa interessante eh, nesses casos,
+retornar o proprio usuario la nesse use-case, ai nois podemos, caso precisar,
+pegar aquele usuario recem criado p fzer o q quiser, nesse caso, usar nos testes.
+Retornar dentro de um objeto pois se no futuro a gente retornar outra coisa, nao 
+vamos mudar a estrutura do retorno, seria so colcoar mais um atributo la dentro.
+Isso eh bom obviamente pra evitar que a gente precise trocar tbm o jeito que pegamos o retorno caso
+ja usamos em outro lugar anteriormente. tipo, eu pegava o user, agr vou ter q pegar dentro de um ojeto
+
+(Nao esquecer de, depois de adicionar aquele retorninho, fazer a interface do response e 
+tipar o retorno da funcao com Promise<interface>)
+
+Com o user retornado, la nos testes podemos pegar ele de voltar pra usar a funcao
+compare do bcryptsjs, que compara se tal senha corresponde aquele hash. No caso, 
+comparamos a senha que usamos na hora de registrar chamando o execute, com o
+user.password_hash do usuario retornado pelo metodo.
+
+...Porem ha um problema. Estamos usando o prismaRepository, ou seja, estamos usando
+o nosso banco de dados, e um teste unitario deve ser independente de qlqr camada.
+queremos testar apenas se o registerUseCase.execute esta hasheando a senha, kct.
+Entao, como fizemos a inversao de dependencia naquele use-case e ele nao depende da
+implementacao, e sim da interface, da abstracao, entao podemos colocar ali um repositorio
+fake. Podemos colocar um repositorio que implementa a interface que imita todas as funcoes 
+normais, mas que sao feitas tudo na memoria, puro js. 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

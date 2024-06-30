@@ -508,4 +508,35 @@ colocar como parametro, assim, nao precisamos denovo fazer a tipagem/interface p
 criar usuario (poderiamos separar em um arquivo essa interface tbm por exemplo.)
 
 
+_____________________________
+
+Inversao de Dependencia.
+
+apesar do prisma estar totalmente desacoplado, o use-case de register continua dependente daquele repositorio.
+
+oq vamos fazer eh, ao inves de instanciarmos o repositorio dentro do use-case, vamos receber ele por parametro.
+
+isso vai ser bom pois, se quisermos trocar prisma pra sequelize, entao vamos ter que trocar a nomeclatura tbm
+da instanciacao de todos os lugares que importamos esse repositorio.
+
+Pra isso, nois entao nao vamos enviar ali no parametro diretamente, misturado com os outros parametros. 
+Vamos envolver essa funcao em uma classe para podermos usar o construtor da classe. e sim, a classe tera
+apenas um metodo.
+
+a classe vai ter o mesmo nome da funcao, mas com o nome maiusculo. Entao, o nome da funcao vai ser algo mais generico, 
+como handle ou execute.
+
+no construtor vamos receber o repositorio. vamos chamar ele obviamente com um nome generico, pois pode vir 
+prismaRepository, sequelizeRepository, qualquer coisa.
+
+agora, a RESPONSABILIDADE de escolher o repositorio nao sera mais do use-case, mas sim, de que CHAMA-LO, que no caso,
+eh o controller. La no controller, vamos instanciar o repositorio E instanciar a classe RegisterUseCase passando
+aquele repositorio instanciado como parametro.
+eai, eh so chamar essa classe + o metodo com os parametros normais. a classe ja ta com a dependencia injetada.
+
+
+Resumindo: a inversao de dependencia fez com que: o arquivo que precisar do caso de uso, do register use case,
+eh ele que vai enviar as dependencias como parametro. Agora o use-case nao vai ter nadica de nada relacionado ao prisma.
+pois apesar do prisma ter sido desacoplado e colocado no repositorio, o use-case tbm tinha que instancia-lo, tinha
+que se preocupar em pegar o repositorio correspondente, no caso, aquele do prisma.
 

@@ -564,3 +564,35 @@ de repositorios que utilizam o prisma.
 
 Eh a interface que eh o contrato, ela que vai decidir quais metodos vao existir na comunicacao
 do repositorio com o caso de uso, quais os parametros e etc.
+
+
+
+____________________________
+
+A gente retorna erros no use-case, podemos retornar varios tipos de erros.
+
+No controller, chamamos o use-case com um try-catch caso tenha erro. Mas no catch
+retornamos apenas um reply.status com status do erro.
+
+Mas pode ser varios erros, entao vamos criar uma pasta errors dentro da pasta use-cases e fazer classes pra todos os tipos de erros.
+essa classe extende a classe Error nativa do js, chama o super(), que eh o construtor do Error, que eh o que estavamos
+chamando anteriormente com throw new Error('xxx'), e colocamos a mensagem especifica ali.
+Dessa forma, quando formos dar um throw error, vamos dar o throw na classe de erro correspondente.
+
+la no controller, podemos fzr as condicionais p ver os erros e retornar o status correto, alem de recuperar a mensagem tbm.
+
+
+_____________
+
+La no app.ts, podemos fazer um handler global de erros, pra erros que a gente nao tratou ou pra erros que nao conhecemos.
+la, colocamos condicional p erro de ZodError, e tbm fazemos log no erro pra caso estejamos rodando em ambiente de dev ou test.
+Se for ambiente de producao, o log vai ser numa ferramenta externa de observabilidade.
+
+e por fim, um erro generico 500, obviamente.
+
+
+Dessa forma, caso aconteca um erro la no controller que nao capturamos nas condiconais  do catch, entao la mesmo depois das 
+condicionais a gente faz um throw error, um throw no proprio error que veio no catch(error), dessa forma, deixamos pro
+setErrorHandler do fastify pra lidar globalmente com esses erros, eh como se fosse uma pia. A gente joga os restos de comida
+do prato fora, mas caso sobrar algo, mesmo assim nao vai descer no cano, pois tem uma rede ali no ralo pra pegar os restinhos
+de comida por precaucao.

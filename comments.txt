@@ -655,7 +655,9 @@ iinterface p visualizar melhor os testes - abre um navegador
 @vitest/ui"
 
 
-__________________________
+__________________________________
+
+authenticate - use case
 
 Vamos fazer mais funcionalidades. Vamos comecar pelo caso de uso pois ele ja eh testavel desde o iinicio com
 testes unitarios
@@ -672,4 +674,41 @@ mesmo (invalid credentials), pois nesses casos de authetnciacao, nao eh bom fala
 foi o erro especifico, por seguranca.
 
 Depois que foi feito esse caso de uso de autenticacao, vamos fazer o teste e o controller dele.
+
+___________________________________
+
+authenticate - testes e controller
+
+Sera feito teste para verificar se , ao criar um usuario e authentica-lo, se um user.id eh
+criado. 
+
+tambem sera feito testes para verificar os erros, forcando a entrar nos ifs de erros
+
+Repare que para criamos um usuario fake, basta chamarmos o metodo create do usersRepository,
+que basicmaente cria um usuario na array de items, pois eh assim que foi feito o repositoruio
+fake para salvar as coisas em memoria. um user mockado !
+
+Agora que foi feito os testes do use-case, podemos fazer o controller.
+
+Assim como no controller de register, validamos o request com zod, chamamos 
+o use-case e enviamos uma response.
+
+Repare que no controller a gente faz validacao com zod de forma mais incisiva, tipo,
+regra(email.cpf,etc), minimo de caracteres. Ou seja, validando o request do frontend mesmo.
+
+ja no use-case sim ha a tipagem com interface, apenas para tipar o request e response
+
+e pronto, podemos criar a rota nomeando com session e chamando o controller correspondente.
+
+Repare que a autenticacao ta bem pobre, apenas estamos validando o email e senha do usuario.
+Porem tbm temos que validar o usuario nas suas proximas requisicoes dentro da aplicacao.
+Pra isso, no futuro, usaremos jwt p usar tokens
+
+
+
+
+
+
+
+
 

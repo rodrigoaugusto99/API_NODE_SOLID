@@ -637,11 +637,22 @@ implementacao, e sim da interface, da abstracao, entao podemos colocar ali um re
 fake. Podemos colocar um repositorio que implementa a interface que imita todas as funcoes 
 normais, mas que sao feitas tudo na memoria, puro js. 
 
+__________________
+coverage - pra poder ver se a aplicacao ta sendo bem testada 
 
+npm i @vitest/coverage-c8
 
+"test:watch": "vitest",
+"test:coverage": "vitest run --coverage"
 
+eai com isso a gente abre o file explorer, la da pra ver quais linhas do codigo nunca foram rodadas,
+e quantas vezes foram rodadas, etc.
 
+_______________
+vitest ui 
+iinterface p visualizar melhor os testes - abre um navegador
 
+@vitest/ui"
 
 
 

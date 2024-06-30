@@ -655,11 +655,21 @@ iinterface p visualizar melhor os testes - abre um navegador
 @vitest/ui"
 
 
+__________________________
+
+Vamos fazer mais funcionalidades. Vamos comecar pelo caso de uso pois ele ja eh testavel desde o iinicio com
+testes unitarios
+
+caso de uso de autenticacao.
+ - classe AuthenticateUseCase com seu construtor com o UserRepository
+ - o metodo unico execute
+ - iinterface de request e response
 
 
+no use-case de authenticate, foi feito recebido por parametro o usuario, foi checado se ele
+existe, depois foi checado se a senha esta correta. Ambos os erros possiveiis retornamos o 
+mesmo (invalid credentials), pois nesses casos de authetnciacao, nao eh bom falar p usuario qual
+foi o erro especifico, por seguranca.
 
-
-
-
-
+Depois que foi feito esse caso de uso de autenticacao, vamos fazer o teste e o controller dele.
 

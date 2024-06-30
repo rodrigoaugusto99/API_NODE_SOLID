@@ -2,13 +2,30 @@ init -y
 
 src - server.ts
 
-typescript, types/node, tsx, tsup -d
+dependencias
+typescript,
+ @types/node, 
+ tsx, (p executar codigo typescript(converte em js pro node poder entender)
+ tsup (pra criar o build da aplicacao em js pra quando formos lancamos a aplicacao )
+ -d
 
-npx tsc --init   - tsconfig.json es2020
+npx tsc --init   (p criar o arquivo tsconfig.json)
+- tsconfig.json es2020
+
+server.ts eh onde vai ficar a instancia do servidor
 
 fastify
 
 server.ts e app.ts
+app instanciamos e exppportamos o fastify
+no server, importamos essa instancia e 
+criamos o server.
+
+host: 0.0.0.0 pra aplicacao ser acessivel por frontends
+
+o listen eh uma promise (future), entao aguardamos o serrvidor subir,
+escutando na porta 3333, e ai o then() roda quando ficar pronto
+
 
 .gitignore
 
@@ -20,6 +37,10 @@ scripts
     pasta js dentro da pasta build
     "build": "tsup src --out-dir build" - pega codigo no src, converte js e joga no /build
   },
+
+
+  tsx - p rodar o typescript, watch - p ouvir alteracoes, src/server.ts pra rodar aquele arquivo (o servidor no caso)
+  tsup src - pegar todo o codigo na pasta src e converter p js, --out-dir - diretacionar o resultado p pasta build
 
   _____________________________________________________________
 
@@ -150,6 +171,13 @@ model User {
   @@map("users")
 }
 
+ na maioria das vezes, usar uuid ali no id eh pra caso das rotas por exemplo user/2 - onde o id eh exposto.
+ ai pra evitar que o usuario coloque um outro id referente a outro usuario, entao ele teria que adivinhar um 
+ uuid, o que eh mais dificil.
+
+ Se o id nao for exposto assim no frontend, entao pode ser incremental mesmo
+
+
 esse @@map("users)
 eh so pra renomear a tabela la no banco pra seguirmos o
 padrao de letra minusucla e plural.
@@ -195,6 +223,8 @@ esse ehh o comando, mas vms fzr umas configuracoezinhahs antes de rodar o comand
 
 docker run --name api_node_solid_pg -e POSTGRESQL_USERNAME=docker -e POSTGRESQL_PASSWORD=docker 
 -e POSTGRESQL_DATABASE=apisolid -p 5432:5432 bitnami/postgresql
+
+aquele -p eh pra posta 5432 do docker poder ser acessada na porta 5432 da nossa maquina localhost.
 
 pronto !
 
@@ -251,7 +281,7 @@ conseguimos ter acesso ao banco, as tabelas, de forma facil em uma interface
 _____________________________________________________________
 
 
-
+docker compose dita quais sao todos os container que precisamos criar p funcionar
 
 docker compose - bota aquelas informacoes que usammos no inicio da criacao do container,
 e quem usar a nossa aplicacao eh so rodar:\
@@ -348,7 +378,8 @@ as querys que o prisma faz automaticcamente quando mandamos.
 
 por exemplo, no nosso prisma.user.create({}), aconteceu um log,
 'INSERT INTO .....'
-
+no futuro tbm faremos essa condicional no caso de, se for ambiente
+de producao, entao vms usar logs apenas para erros.
 
 _____________________________________________________________
 
@@ -370,6 +401,13 @@ nas rotas, tem cada rota com o controller sendo chamado
 nos controllers, tem as regras de negocio.
 
 jaja vms desestrutruar tambem esse controller.
+
+reparemos que a parte de entrada de dados(pegar o body e fazer o parse)
+e a parte de retornar dados, eles pertencem ao controller, eeh uma camada.
+
+Entre eles, ha a criacao do usuario, que eh algo independente do resto. nao importa daonde veio os dados,
+oq imoporta eh que temos que checar se ha um email igual, temos que criptografar a senha, etc.
+Entao vms tirar isso e colocar fora do controller (services, casos de uso, etc)
 
 _____________________________________________________________
 

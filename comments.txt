@@ -720,6 +720,14 @@ dessa forma, criamos e tipamos.
 dentro do beforEACH, ai sim vms atribuir corretamente
 
 
+_______________________________________________
 
+para evitar que toda vez que formos chamar um use-case, ter que instanciar todas as suas dependencias,
+entao vamos fazer uma funcao que ja fazz isso automaticmaente e de forma centralizada
 
+FACTORY PATTERN !!
 
+Agora, quando formos alterar alguma dependencia, tirar ou adicionar, eh so mexer ali no factory que
+ja vai refletir em todos os lugares.
+
+entao esse factory serve so pra instanciar mesmo as classes/entidades. Nao tem regras de negocio.

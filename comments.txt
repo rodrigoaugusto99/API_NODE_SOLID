@@ -492,6 +492,20 @@ de uso de criar usuario mandando email, nome e senha. Nao precismaos nos preocup
 em criar o usuario apenas quando for assim atraves de requisicao http
 
 
+_______________________________
+
+
+Repositoy Pattern
+
+vamos tirar o codigo espeecifico de uma ferramenta(prisma) e colocar na pasta repositories. 
+Apenas la vamos usar a logica do prisma e se comunicar com o banco de dados, pois vamos supor
+que eu queira trocar o prisma por sequelize. Entao vms mexer apenas nessa pasta repositories. 
+
+basicamente estamos protegendo nossa aplicacao de dependencias externas.
+
+usamos a tipagem que o prisma gerou que serve para criiar um usuario, para poder
+colocar como parametro, assim, nao precisamos denovo fazer a tipagem/interface pra
+criar usuario (poderiamos separar em um arquivo essa interface tbm por exemplo.)
 
 
 

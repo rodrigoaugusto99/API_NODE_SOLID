@@ -540,3 +540,27 @@ eh ele que vai enviar as dependencias como parametro. Agora o use-case nao vai t
 pois apesar do prisma ter sido desacoplado e colocado no repositorio, o use-case tbm tinha que instancia-lo, tinha
 que se preocupar em pegar o repositorio correspondente, no caso, aquele do prisma.
 
+__________________________
+
+Precisamos de uma interface para se referir a qualquer repositorio.
+Dessa forma, no construtor re RegisterUseCase, vai ficar usersRepository: UserRepository, ai inves de any
+ou de PrismaRepository(que tbm estaria errado pois o use-case ficaria sabendo do prisma, ficaria dependente, 
+e queremos nao ter nenhuma mencao do prisma, queremos apenas que esse use-case chame o repositorio, sem
+precisar saber qual a implementacao concreta dele.)
+
+Pra isso vamos usar uma interface (pode ser classe abstrata tbm.)
+
+Com essa classe abstrata, todos os use-cases que chamarem repositorio vao esperar como parametro essa interface,
+que corresponde a qualquer repositorio. Nessa interface, vamos colocar APENAS a assinatura do metodo, nao vamos 
+implementa-lo. Dessa forma,  a interface determina que toda classe (repositorio no caso) que implementar ela, vai
+precisar daquele metodo com aquele nome e com aquele tipo de parametro.
+
+Com a interface criada, ele vai ser a tipagem do repositorio que cada use-case que chamar o repositorio vai esperar por parametro.
+
+Dessa forma, o repositorio de users (prisma, sequelize, etc), tera que implementar (implements) essa interface
+
+Podemos tbm criar uma pasta dentro da pasta repositorioes chamada prisma, e la colocamos todas as implementacoes
+de repositorios que utilizam o prisma.
+
+Eh a interface que eh o contrato, ela que vai decidir quais metodos vao existir na comunicacao
+do repositorio com o caso de uso, quais os parametros e etc.

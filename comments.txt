@@ -751,6 +751,16 @@ Vamos focar bastante primeiros nos casos de uso sem se preocupar com os factorys
 dependem de nada externo, entao eh como se estivessemos preparando o core da aplicacao, criando primeiro a base de tudo, pra
 depois ir pra camada de infra, implementar de fato as coisas que se comunicam com o externo, como a camada http, o prisma, o banco, etc.
 
+____________________________________________
+
+caso de uso - CHECK-IN
+
+fazer o check-in use case, fazer a interface de checkinsRepository, e depois implementar o in memory p repository,
+inicialmente com o metodo create.
+
+use case vai receber por construtor esse repositorio novo de checkin.
+
+
 
 
 

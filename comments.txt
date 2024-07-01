@@ -731,3 +731,26 @@ Agora, quando formos alterar alguma dependencia, tirar ou adicionar, eh so mexer
 ja vai refletir em todos os lugares.
 
 entao esse factory serve so pra instanciar mesmo as classes/entidades. Nao tem regras de negocio.
+
+_____________________________________________
+
+caso de uso - PERFIL
+
+id eh a informacao que nunca vai ser alterada, entao o use case de perfil vai receber ela como parametro
+para poder recuperar os dados do usuario
+
+ha de criar a assinatura do metodo findById na interface do repositorio de usuario.
+ha de implementar nos repositorios que a implementam, no in memory e no prisma.
+
+vamos primeiro fazer todos os use-cases com seus testes unitarios, e depois vamos fazer os conmtrolers e seus testes maaiores
+
+eh mt comum fazermos a verificacao de existencia daquele usuario/id, e raramente esse erro tbm vai acontecer, entao
+sera feito um error generico (resource not found)
+
+Vamos focar bastante primeiros nos casos de uso sem se preocupar com os factorys e controllers. Os casos de uso nao
+dependem de nada externo, entao eh como se estivessemos preparando o core da aplicacao, criando primeiro a base de tudo, pra
+depois ir pra camada de infra, implementar de fato as coisas que se comunicam com o externo, como a camada http, o prisma, o banco, etc.
+
+
+
+

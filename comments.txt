@@ -760,6 +760,89 @@ inicialmente com o metodo create.
 
 use case vai receber por construtor esse repositorio novo de checkin.
 
+______________________________________________________
+
+TDD 
+
+desenvolvimento dirigido a testes - se desenvolvermos o teste de uma regra de negocio antes da implementacao daquilo, 
+o teste por si so ajuda a validar se sua implementacao esta certa.
+
+eh metodologia, entao eh opcional. pode usar ou nao, pode ser util ou nao, pode ser bom p alguem ou nao.
+
+eh bom a gente fazer isso em alguma funcionalidade mais complexa...crud simples pode fzr os testes dps mesmo.
+
+fluxo do tdd - red, green, refactor
+red- causo o erro (no inicio, com nada implementado, obvio que vai dar erro)
+green - codamos o minimo possivel p solucionar o erro, p  qndo dar test, dar certo
+refactor - refatoramos.
+
+smp q possivel, nosso teste unitario deve ser o mais especifico possivel.
+
+eh melhor ter varios testes que testam pequenas partezinhas do que um teste nosso
+testar mais casos
+
+
+Mocking - criar valores ficticios pra dados.
+
+Vamos usar essa estrategia pois lidar com datas em testes pode ser problematico
+
+Red (Vermelho): 
+nesta fase, o desenvolvedor escreve um teste que deve falhar, ou seja, ele garante que o teste não passará sem implementar o código necessário.
+
+Green (Verde): 
+aqui, o desenvolvedor escreve a quantidade mínima de código necessária para fazer o teste passar.
+
+Refactor (Refatorar): 
+após o teste passar, o desenvolvedor refatora o código para melhorar a qualidade, sem alterar seu comportamento.
+
+REGRA DE NEGOCIO DO CHECK-IN 
+Usuario nao pode fazer 2 checkins no mesmo dia.
+
+Pra isso, vamos nesse caso usar o metodo TDD. 
+
+os testes serao de criacao de checkin, e depois validar que dois checkins nao podem ser feitos
+no mesmo dia.
+
+o teste de dois checkins no mesmo dia, sera feito um teste que ira falhar, pois nao implementamos nada ainda.
+
+No caso, a criacao de dois checkins no mesmo dia deve dar reject.toBeInstanceOf(Error)
+
+deu RED. 
+
+Vamos fazer dar green do jeito mais simples possivel (e errado)
+
+Vamos criar mais um metodo no repositori (alem do create) chamado findbyUserOnDate, ou seja
+procurar por um usuario EM uma data.
+
+Nesse metodo, vamos resolver o teste de maneira porca. vamos simplesmente verificar se aquele 
+usuario ja fez checkin antes. Ou seja, nao estamos usando a data ainda.
+
+pronto, o teste que busca rejeicao em caso de chheckin no mesmo dia ja esta dando certo.
+
+No teste, usamos 
+vi.setSystemTime(new Date(2022, 0, 20, 8, 0, 0))
+para mockar uma data.
+
+Agr vamos fzr um teste que tem que deixar um usuario fazer checkin em dias diferentes.
+
+Setamos uma data em uma criacao de checkin, dps setamos OUTRA data antes da criacao
+de outro checkin, pra contar como checkins em dias diferentes. Esperamos que de certo ne? 
+pois bem, nao deu, pois la no repositorio apenas estamos validando de acordo com o userId, e nao
+com a data.
+
+Entao tdd eh isso. Fizemos o teste passar de qualquer jeito. Depois, vou criando mais testes 
+pra dar mais erros, e ir nos ajudando a entender pra onde temos que caminhar.
+
+Isso foi maravilhoso!!!!!!!!!!!!!!!!!!! 
+usuario nao pode fazer 2 checkins no mesmo dia! fizemos um teste simples que falhou. depois
+resolvemos com uma implementacao simples. Usuario PODE fazer 2 checkins em dias diferentes!
+fazemos o teste e falhou, pois a nossa implementacao basica anterior nao foi o suficiente. Entao
+fazemos mais uma implementacao pra validar esse proximo teste.
+
+Voce vai criando testes e mais testes pra cada uma das possibilidades de fluxo que o usuario pode fzr.
+
+
+
 
 
 

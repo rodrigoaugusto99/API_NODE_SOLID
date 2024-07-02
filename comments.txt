@@ -841,6 +841,79 @@ fazemos mais uma implementacao pra validar esse proximo teste.
 
 Voce vai criando testes e mais testes pra cada uma das possibilidades de fluxo que o usuario pode fzr.
 
+_____________________ 
+
+continuando a testar e implementar os checkins
+
+No metodo de findByUserOnDate, tambem precisamos levar em conta a data, alem do usuario. Nosso ultimo teste
+esta falhando pois nao esta deixano o usuario fazer 2 checkins em dias diferentes, pois estamos implementando
+o suficiente apenas para suprir o teste anterior, rejeitando a criacao de checkin caso um usuario ja tenha feito, 
+mas sem levar em conta a data. Agora que fizemos um teste que precisa deixar que o usuario faca checkins em dia 
+diferentes, entao PRECISAMOS levar em conta a data tbm pra satisfazer esse teste.
+
+Entao, la no repositorio em memoria, so pra testes, vamos implementar essa nova necessidade. 
+
+Sabendo que pra gente fazer esse findByUSerOnDate, temos que verificar tanto o user quando a data
+usando aquele array de itens, entao vms ter que percorrer aquele array, e em cada elemento, verificar
+se aquele checkin eh do usuario. ALem disso, verificar se a data daquele checkin daquele usuario, corresponde
+ao dia atual. Se essas duas condicoes for true, entao o booleando de chehckInOnSameDate sera true, logo,
+verificamos se tem ou nao um checkin daquele usuaro naquele dia.
+
+Com a biblioteca dayjs, foi criado uma variavel que pega o valor do inicio do dia, e outra variavel
+pra pegar o valor do final do dia.
+Agora, alem de retornar bool no caso de JA TER, no array de itens, um checkin daquele userId que foi passado por parametro, tbm vamos jogar bool se
+esse checkin da iteracao corresponder a antes do fim da data atual e depois do inicio da data atual, data atual essa que foi passada por parametro.
+
++ logicas...
+
+O checkin so pode ser feito se o usuario estiver pelo menos 100m de distancia da academia.
+
+no use-case de checkin entao, temos que trabalahr com entidade de academia, pois eh nela que estao armazenados
+latitude e longitude.
+Entao temos que criar um repositorio pra academias para poder buscar academias do banco.
+
+Pra sabermos a distancia entre o usuario e a academia, tbm devemos ter a latitude e longitude do usuario.
+
+Entao ja colocamos esses dados na interface de request. Como vamos buscar esses dados? isso vms ver dps, o importante
+eh colocar ali que vms ter esses dados. Ate por que, o caso de uso NAO PRECISA SABER DE ONDE AS INFORMACOES VEM. lembremos
+que caso de uso eh a parte mais isolada do resto da aplicacao, eh onde nao ha dependencia de nada. os dados ela vai receber do controller, 
+as dependencias tbm, etc. O que importa eh que o caso de uso tem que receber essas informacoes que sao necessarias pra ele funcionar.
+
+Entao vms atribuir essas informacoes na interface de request, vms tbm colocar mais uma dependencia na classe, a dependencia de gymRepository,
+e tbm vms criar o metodo de buscar o gym pelo id la no repositorio in memory que extende o gym repository interface
+
+tbm ja vamos adiantar o erro de gym nao encontrado, com aquele erro padrao que fizemos anteriormente de resourceNotFound
+
+Agora vamos partir pro calculo de distancia, onde obviamente iremos tbm retornar outro erro no caminho triste.
+
+Porem, ja que mudamos a interface de request, tbm mudamos o tipo de request da rota, e ja que mudamos tbm as dependencias, entao
+isso tbm devera influenciar os testes. 
+La no testes, vai estar com erro pois o use-case de checkin vai precisar de duas dependencias
+Nas chamadas dos executes, tbm vms ter que adaptar ao novo request...tera latitude e longitude
+(lat e lon so vao ser importantes nos testes que estarao checando algo relacionado a distnacia, ent passa como 0 alguns)
+Tbm sera necessario criar uma gym em cada teste, pois agora, nosso use-case tbm ta comecando a lidar com o gymId, nao so com
+o userId. Tanto que ate ta com erro de notfoundresource pra gym, pois precisamos dela p calcular a distancia.
+
+Caso ainda nao tivermos o metodo no repositorio de criar gym, entao podemos simplesmente adicionar uma gym no array de items do 
+repositorio, nao tem problema fzr isso las nos testes, ate pq no repositorio in memory de gym seria assim mesmo que iriamos criar
+uma gym, adicionando ela no array de items.
+
+
+
+Vamos fazer o teste para validar a distancia entre o usuario e a academia.
+
+fazendo checkin em uma academia longe, claro que o teste nao vai funcionar, pois
+era pra dar reject, mas ainda nao implementamos a logica.
+
+entao, vamos pegar as coordenadas do gym que pegamos pelo repository e as coordenadas do usuario que
+vem por parametro. Fazer a funcao de calculo de distancia na pasta Utils e enviar os dados. 
+Nao esquecer de pegar o retorno e fzr condicional com a distancia requerida(100m)
+
+
+
+
+
+
 
 
 

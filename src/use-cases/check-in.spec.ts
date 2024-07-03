@@ -1,28 +1,29 @@
 import { expect, describe, it, beforeEach, afterEach, vi } from "vitest";
 import { CheckInUseCase } from "./check-in";
 import { InMemoryCheckInsRepository } from "@/repositories/in-memory/in-memory-check-ins-repository";
-import { InMemoryGymsRepository } from "@/repositories/in-memory/in-memory-gym-repository";
+import { InMemoryGymsRepository } from "@/repositories/in-memory/in-memory-gyms-repository";
 import { Decimal } from "@prisma/client/runtime/library";
+import { MaxNumberOfCheckInsError } from "./errors/max-distance-error";
+import { MaxDistanceError } from "./errors/max-number-of-check-ins-error";
 
 let checkInsRepository: InMemoryCheckInsRepository;
 let gymsRepository: InMemoryGymsRepository;
 let sut: CheckInUseCase;
 
 describe("Chheck-in Use Case", () => {
-  beforeEach(() => {
+  beforeEach(async () => {
     checkInsRepository = new InMemoryCheckInsRepository();
     gymsRepository = new InMemoryGymsRepository();
     sut = new CheckInUseCase(checkInsRepository, gymsRepository);
 
-    gymsRepository.items.push({
+    await gymsRepository.create({
       id: "gym-01",
       title: "JavaScript Gym",
       description: "",
       phone: "",
-      latitude: new Decimal(-22.9317274),
-      longitude: new Decimal(-43.1816704),
+      latitude: -22.9317274,
+      longitude: -43.1816704,
     });
-
     vi.useFakeTimers();
   });
 
@@ -49,7 +50,8 @@ describe("Chheck-in Use Case", () => {
       userLatitude: -22.9317274,
       userLongitude: -43.1816704,
     });
-
+    // eslint-disable-next-line spaced-comment
+    //e se for duas academias diferenes?
     await expect(() =>
       sut.execute({
         gymId: "gym-01",
@@ -57,7 +59,7 @@ describe("Chheck-in Use Case", () => {
         userLatitude: -22.9317274,
         userLongitude: -43.1816704,
       })
-    ).rejects.toBeInstanceOf(Error);
+    ).rejects.toBeInstanceOf(MaxNumberOfCheckInsError);
   });
 
   it("should be able to check in twice but in different days", async () => {
@@ -99,6 +101,6 @@ describe("Chheck-in Use Case", () => {
         userLatitude: -22.9317274,
         userLongitude: -43.1816704,
       })
-    ).rejects.toBeInstanceOf(Error);
+    ).rejects.toBeInstanceOf(MaxDistanceError);
   });
 });

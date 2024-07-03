@@ -909,6 +909,24 @@ entao, vamos pegar as coordenadas do gym que pegamos pelo repository e as coorde
 vem por parametro. Fazer a funcao de calculo de distancia na pasta Utils e enviar os dados. 
 Nao esquecer de pegar o retorno e fzr condicional com a distancia requerida(100m)
 
+_____________________________________
+use case de criar academia.
+
+fazer a assinatura na interface repository
+fazer a implementacao no in memory repository
+fazer o use-case - call repository, do interfaces(req & res), dependencies.
+testes.
+
+coisas a cuidar: 
+-prisma nao aceita tipo undefined;
+-new Decimal
+-precisamos de testes que criam gyms com id especifico,
+entao, ha de verificar-se o repositoryo de gym pra ver
+se a atribuicao do ID esta correta ( criar uuid apenas
+se nao data.id for null) (Pois estavamos criando uma gym
+com id especifico usando o metodo create, mas no create 
+estavamos criando o gym semrpe  com id aleatorio, sem antes
+verificar se ha um id no data.)
 
 
 

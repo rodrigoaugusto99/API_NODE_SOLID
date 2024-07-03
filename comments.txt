@@ -928,7 +928,44 @@ com id especifico usando o metodo create, mas no create
 estavamos criando o gym semrpe  com id aleatorio, sem antes
 verificar se ha um id no data.)
 
+___________________________
+use-case historico (lista de checkins)
 
+- fazer a assinatura na interface repository
+- fazer a implementacao no in memory repository
+- fazer o use-case - call repository, do interfaces(req & res), dependencies.
+- testes.
+
+nos testes, vamos criar alguns checkins, os dois em gyms diferentes, 
+ou seja, com gym ids diferentes.
+
+no test, ao criar esse checkin levando em conta o gym id e obviamente o id do usuario, 
+vamos esperar que, ao chamar o use-case com o findManyCheckins, venha a quantidade
+predefinida e que os objetos contenham tal campo (os gym ids), ao inves de desneces-
+sariamente colocar o ojeto inteiro.
+
+na paginacao, vms fazer um loop p criar varios checkins e, ao retornar eles com o findMany,
+vms esperar que retorne a sobra da primeira apginacao.
+Por exemplo, temos 22 checkins, vms fzr paginacao de 20 items. Entao vms pegar todos os 
+checkins com o findmany, colocar pra buscar a pagina 2, e esperar, alem de 2 itens,
+tbm os objetos contendo seus respectivos ids (gym_21 e gym_22)
+
+Como paginar? antes, estavamos pegando todos os checkins de determinado usuario, usando o 
+filter (p pegar apenas os items daquele array em que o user_id do item seja igual ao userId
+que veio por parametro). Agora, vamos tambem pegar esse resultado e usar o metodo .slice, que 
+pega uma fatia da lista resultante. do index x ao index y.
+
+pagina 1 - slice(0, 20)
+pagina 2 - slice(20, 40)
+
+entao, como a pagina tbm vem por parametro, vai ser o seguinte:
+
+(page * 20, page * 20) - errado, pois a primeira pagina eh a pagina 1,
+entao a primeira parte ficaria 20 ao inves de 0.
+entao = slice.((page - 1) * 20, page * 20)
+
+Dessa forma, a cada troca de pagina, o parametro "page" muda, entao automaticamente
+ja retorna a nova fatia.
 
 
 

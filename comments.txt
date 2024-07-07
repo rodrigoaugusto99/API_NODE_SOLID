@@ -967,10 +967,52 @@ entao = slice.((page - 1) * 20, page * 20)
 Dessa forma, a cada troca de pagina, o parametro "page" muda, entao automaticamente
 ja retorna a nova fatia.
 
+________________________________________
+
+Depois de fzr todos os use-cases, podemos ir pra parte da infraestrutura,
+os controllers, as rotas, os repositorios (prisma no caso), ou seja, tudo
+que eh volatil, que pode mudar no futuro.
+
+Agora vamos expor a nossa apliccacao ao mundo, pois ate agr, todos os testes
+que a gente fez, os casos de uso, apesar de validarmos, eles funcionam
+a nivel de codigo, mas nao sao acessiveis, nao tem ccontrollers, rotas,
+nao tem repositorio do prisma, etc.
+
+Agora vms pras camadas externas. Uma expressao comum, nossa aplicaccao eh dividida
+em camadas literalmente.
+
+Os casos de uso, que tem as regras de negocio, eh a coisa mais importante da aplicacao,
+e deixamos ela pronta antes de todo o resto. Esse ehh o core da aplicacao, nao pode
+deixar de funcionar, nao pode faltar testes.
+
+Vamos entao comecando implementando os repositorios do prisma.
+
+repositorio de checkin...
+
+Repare que eh uma tarefa rapido, so precisa conheccer das nuances do prisma no caso.
+os tipos dos parametros e os retornos ja estao definidos, eh so fazer.
+
+repare que pra buscar o checkin ccom base no userId e na data (createdAt),
+nois nao vamos reccuperar todos os checkins e fzr o filtro, vamos filtrar
+pelo proprio prisma mesmmo. Como queremos filtrar por uma condicao que nao eh "unica", como 
+o id ou email, e sim pela data de criacao, entao vamos usar o findFirst, e nao o findUnique.
+nisso, usamos o greaterThanOrEqual e lessthanOrEqual para verificar se a data de criacao
+esta entre a data que veio por parametro. Pra isso, tbm usamos o dayjs pois so queremos
+comparar os dias, sem ligar pras horas minutos e segundos.
 
 
+repositorio de gym...
 
+no caso do findManyNearby, no repositorio em memoria, como eh tudo js, usamos na propria busca
+uma funcao js que fizemos apra filtrar com base na longitude e latitude.
+Porem, o prisma nos da facilidade nessas coisas simples, criacao, exclusao, busca, etc.
+mas nesse caso mais especifico, o vamos precisar usar sql puro para executar aquela query 
+que filtra pela localizacao. 
 
+Usamso o generics para tipar o retorno pois o prisma nao sabe ler o que tamo fazendo naquele queryRaw.
+
+Assim como no caso da funcao js p caclualr a distancia entre gym e usuario, nois tbm obviamente pegamos
+da internet aquela query pronta. 
 
 
 

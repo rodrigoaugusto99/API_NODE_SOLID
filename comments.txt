@@ -1114,8 +1114,48 @@ Em todas as requisicoes que precisam swer autenticadas, precisamos entao chamar 
 Entao vms automatizar isso, chamar um middleware la na hora de chamar a rota.
 
 
+_________________________________
+ testes end to end.
 
+ testes que vao passar pelo banco de dados tbm, que vao simular o fluxo do usuario, que no caso
+ eh um frontend. realmente vms usar o banco, pois queremos teste fiel ao que realmente sera feito em
+ producao, entao nao tera tantos mocks.
 
+ E outra, nao devemos usar o mesmo banco para producao e para testes. Vamos ter um banco separado pra testes
+ e outro pra desenvolvimento. Vamos separar o banco de dados por switches de testes.
+
+ Precisaremos tbm de ambientes isolados para cada teste. Ou seja, se num teste eu criei um usuario,
+ no outro teste que lista usuarios por exemplo, esse usuario criado no teste anterior nao devera existir
+ no teste seguinte.
+
+Vamos ter que fazer um test enviromnent para rodar os testes end to end.
+Precisaremos de uma url de conexao pro banco de dados diferente para cada
+arquivo de testes end to end (aqueles do c ontrollers)
+
+VAMOS PRECISAR CRIAR UM PACOTE NPM QUE COMECE COM VITEST-ENVIROMNENT-
+
+- criar pasta vitest-environment-prisma
+- acessar essa pasta - npm init -y (criando um pacote
+aqui dentro, como se fossemos hospedar, mas vms hospedar na 
+nossa propria maquina. )
+- mudar o main para prisma-test-environment.ts
+Esse main eh para, caso publique esse pacote, esse vai ser o
+arquivo padrao importado quando a pessoa importar o package.
+-fazer o export default <Environment>{}
+a funcao dentro vai ser chamada 1 vez antes de cada switch de teste.
+- test property em vite.config.ts
+todos os testes que estiverem naquele lugar, quero que use o nosso
+ambiente que criamos chamado prisma (o nome dps de vitest-environmnet-)
+Quando rodamos os testes agora, ele nao sabe que o pacote vitest.
+environment-prisma esta ali dentro, ele tenta procurar por um pacote/
+dependencia que tenha esse nome, la no package.json
+- dentro do pacote la (/prisma/vitest-environment-prisma), escrever npm link.
+COm isso, o npm cria, pra este pacote, como se fosse um repositorio de pacotes
+local.
+- agr no diretorio normal, vms rodar npm link vitest-environment-prisma.
+Pronto, agora os testes entendem aquele pacote prisma.
+Agora, pra cada arquivo de testes dentro de http/controllers, aquele ambiente
+sera instanciado/executado uma vez.
 
 
 

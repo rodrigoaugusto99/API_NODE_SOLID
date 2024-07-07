@@ -1021,3 +1021,102 @@ criar as factories pra TODOS os casos de uso, pois cada caso de uso pode ter mul
 quando usarmos esse caso de uso, ja temos ele pronto.
 
 _______________________________________________
+
+
+Estrategias de autenticacao
+
+basic auth - todas as requisicioes, o usuario precisa enviar as credenciais dele
+no cabecalhho da requisicao.
+Cabecalho sao metadados da requisicao e da resposta, nao sao dados que ele vai inserir,
+sao dados de contexto geralmente.
+
+Existe um header chamado Authorization, pra autenticacao.
+
+No basic auth, a gente enviaria nesse header o Basic (do basic auth),
+e em seguida as credenciais, como o email e senha, e em formato abse 64
+
+jwt - mais famoso - json web token
+user faz login - envia email e senha, backend cria um token unico, n modificavel e stateless.
+stateless - nao eh armazenado em qualquer estrutura de persistencia de dados (banco de dados)
+
+o token eh criado a partir de uma palavra chave, que apenas a api sabe. entao so a nossa api vai conseguir decodificar 
+aquele token criado por ele mesmo. sendo assim, so a nossa api vai cconseguir recuperar os dados dentro daquele token,
+(headers, payload, signature)
+
+ok, entao o backend sabe se aquele jwt foi criado por ele mesmo. 
+mas como vai saber qual eh o usuario q enviou aquilo? nois botamos o id do usuario dentro do token,
+geralmente dentro do 'sub' do payload.
+
+ta, mas e se eu mandar um id diferente? hahahah! a assinatura tbm vai mudar, e eh isso que o backend vai validar.
+qualquer informacao que mandamos pro payload, a assinatura muda tbm. Ou seja, se mandar um id esquisito, o 
+ackend vai ler a assinatura e ver que nao foi ele quem criou aquela assinatura.
+
+vms enviar esse jwt em todas as requisicoes que precisam ser autenticadas, a diferenca eh que nao vamos usar
+o formato Authorization: Basic, mas sim, o Authorization: Bearer, que eh a terminologia pra qnd enviarmos um jwt p
+autenticar a requisicao.
+
+_____________________
+
+BOM SAber que jwt geralmente eh 99% usado pra front se comunciar com back com protocolo http.
+Se for outro tipo de comunicacao, tipo se comunicar com uma outra aplicacao externa, tem tm varias
+ estrategias, como OAuth, API tokens, etc.
+
+Entao, essa nossa autenticacao jwt so servira pra camada http, ali nos controllers e rotas. Os casos de uso eh camada 
+mais pura da nossa aplicacao e que nao quer saber se eh o front que ta chamando, o mobile, uma aplicacao externa, entao
+vai ter nada de jwt por la.
+
+npm i @fastify/jwt
+
+vamos registrar esse modulo jwt.
+
+no app.ts, vms entao registrar esse modulo e passar o 'secret', porem melhor ficcar dentro de .env, 
+pra nem a nossa equipe ter acesso a tela.
+
+Quando registramos isso, agr temos novos metodos disponiveis nas nossas rotas.
+
+O que queremos eh: no processo de login, queremos gerar e devolver pro front um jwt. Atualmente apenas esta
+fazendo o login e validando o email e senha. 
+
+Vejamos que no caso de uso de autenticacao, ha a validacao do email e senha. Entao, no controller, quando chamarmos
+esse use-case, vms armazenar o usuario, pois la no use-case, o usuario eh retornado.
+
+com o usuario 'autenticado' ou seja, com email e senha corretas, vms entao criar um jwt nesse ccontroller.
+Como registramos o jwt no fastify, temos acesso a novos metodos no request e reply. No reply, temos o jwtSign()
+que serve exatamente p criar um novo token. 1 param - payload - informacoes adicionais.
+o id, no caso, coloccamos no segundo parametro, no sign: { sub: user.id}
+
+Nao podemos colocar informacoes sigilosas no jwt como email ou senha, pois o jwt nao eh criptografado, apenas
+eh codificado.
+
+Apos criar o token, podemos retornar. 
+
+curiosidade - no imnsonia, podemos facilmente injetar o toke nali em auth -- bearer.
+mas eh a mesma coisa que irmos em headers, colocarmos Authorization - Bearer e depois o token.
+
+queremos autenticar o token e saber qual eh o usuario que ta chamando tal rota...
+Se chamarmos qualquer rota, por exemplo a rota profile, e passarmos esse token, caso a gente
+de um console.log(request.headers). E ai, quando fazemos a requisicao, esse console eh lido e exibe
+no terminal o header da requisicao, e aparece la o authorization com o Bearer + o token.
+
+De dentro desse token, precisamos VALIDAR que eh token gerado pela nossa aplicacao, e tbm precisamos
+buscar os dados que estao contidos dentro desse tokenn
+
+await request.jwtVerify() essa funcao busca o token no cabecalho. se existe, verifica se foi gerado
+realmente pela nossa aplicacao.
+
+eai, eh so pegar no request.user.sub.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

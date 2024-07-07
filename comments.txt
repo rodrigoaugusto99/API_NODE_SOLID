@@ -1106,9 +1106,12 @@ realmente pela nossa aplicacao.
 
 eai, eh so pegar no request.user.sub.
 
+__________________________________
 
+middleware para autenticacao.
 
-
+Em todas as requisicoes que precisam swer autenticadas, precisamos entao chamar esse request.jwtVerify.
+Entao vms automatizar isso, chamar um middleware la na hora de chamar a rota.
 
 
 

@@ -1015,5 +1015,9 @@ Assim como no caso da funcao js p caclualr a distancia entre gym e usuario, nois
 da internet aquela query pronta. 
 
 
+__________________________________
 
+criar as factories pra TODOS os casos de uso, pois cada caso de uso pode ter multiplas dependencias, sendo assim,
+quando usarmos esse caso de uso, ja temos ele pronto.
 
+_______________________________________________

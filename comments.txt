@@ -1157,6 +1157,97 @@ Pronto, agora os testes entendem aquele pacote prisma.
 Agora, pra cada arquivo de testes dentro de http/controllers, aquele ambiente
 sera instanciado/executado uma vez.
 
+____________________________________________
+
+organizando os scripts.
+
+apenas os testes unitarios que vms rodar toda hora. 
+os testes end to end, nao. 
+
+Ou seja, vms separar esses testes
+
+Estes rodam os unitarios
+"test": "vitest run --dir src/use-cases",
+"test:watch": "vitest --dir src/use-cases",
+
+E este roda os end to end
+"test:e2e": "vitest run --dir src/http",
+
+Porem, aquele lance de entrar na pasta, criar o pacote com npm init -y,
+depois dar o npm link etc...isso so faz efeito na minha maquina. Outra pessoa
+ou outra maquina que realizar esse teste, tera que fazer isso. Entao vms fazer
+script para isso.
+
+quando colocamos um 'pre' antes de um script e dps colocamos o resto do script ja existente,
+quer dizer que queremos rodar esse script em especifico antes de rodar o outro correspondente.
+
+Ou seja, um script pretest, eh rodado antes do 'test' (npm run test)
+Entao, vms fzr um "pretest:e2e" para fazer toda aquela operacao
+antes do dispositivo ser capaz de rodar aqueles testes. 
+
+"pretest:e2e": "run-s test:create-prisma-environment test:install-prisma-environment",
+
+Este script roda aqueles dois scripts em sequenccia. Isso seria feito com &&, pra poder
+rodar os dois scripts em sequencia, mas como o 
+windows n entende isso, baixa-se o package npm run all, e com esse run-s, eh rodado
+sequencialmente esses dois scripts. Se fosse run-p, seria run em paralelo, ou seja, 
+os dois ao mesmo tempo. 
+
+Assim sao os dois testes a serem rodados:
+
+"test:create-prisma-environment": "npm link ./prisma/vitest-environment-prisma",
+"test:install-prisma-environment": "npm link vitest-environment-prisma",
+
+o primeiro eh pra criar o package 
+o segundo eh pra instalar
+
+_____________________________________________________
+
+Agora que temos um ambiente pra cada switch de testes, vamos configura-los.
+
+temos que fazer a logica dentro do setup e no teardown.
+
+Nos queremos mudar a URL de conexao com o banco de dados, pra mudar o bancco em si,
+para cada arquivo de testes.
+
+o postgres permite que nois temoos uma separacao dentro dele. os schemas
+-separar o nosso banco em varios bancos de dados menores
+- sao ambientes totalmente isolados dentro do mesmo banco de dados.
+
+- ccriamos um schema que eh um randomUUID, que vai ser o nome do nosso schema
+Queremos pegar a url das variaveis de ambientes e so mudar o schema, que eh a ultima
+parte la da url, ta la no search/query params. 
+-se tiver um process.env.DATABASE_URL, entao vamos criar uma nova url (USANDO O new URL do node)
+Lembrando que aquilo eh uma url sim, so muda o protocolo. No caso eh postgres, o que a gente usa
+no browser eh o http
+ url. - temos varios metodos pra mexer dentro dessa url nova.
+- criamos uma funcao e usamos url.searchParams  para dar um 'set' e substituir o schema da url 
+pelo schema que veio por parametro na funcao.
+- com essa nova url que criamos em cada switch de testes, em cada setup() desse environment,
+entao vms sobrescrever a database url das variaveis de ambiente por essa nova url.
+- temos que executar as migrations nesse novo ambiente/schema para termos as tabelas
+da nossa aplicacao -> execAsync para executar algo no terminal. (npx prisma migrate deploy)
+(migrate deploy ao inves de mgirate dev para pular a parte de verificar se houve mudancas nos tabelas).
+Pronto, agora fizemos o banco, alteramos a database_url com um novo schema e fizemos as migrations antes
+de rodar todos os testes ENT TO END. 
+- queremos deletar esse schema dps do teste finalizar - fazer essa logica no teardown.
+O prisma nao tem um comandinho fofo pra deletar o banco de dados por inteiro, entao temos que 
+fazer isso de forma mais manual, assim como foi no caso do filter pela distancia entre user e gym.
+-usando prisma.executeRawUnsafe, vms deletar a porra toda (tem que ser o unsafe pq o normal nao deixa
+fazer uma operacao tao sinistra assim, eh tipo uma seguranca...fora que tbm tem + seguranca no que tange
+a sql injection etc.) - usamos o cascade para, tudo que foi criado junto com esse novo schema, ser apagado
+tbm em cascata (indice, chaves, etc)
+-disconnect
+
+
+
+
+
+
+
+
+
+
 
 
 

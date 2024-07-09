@@ -1239,16 +1239,52 @@ a sql injection etc.) - usamos o cascade para, tudo que foi criado junto com ess
 tbm em cascata (indice, chaves, etc)
 -disconnect
 
+__________________________________________________
 
+supertest - requisicoes http do teste pra nossa aplicacao sem precisar colocar o servidor no ar
 
+app.ready - evento que o fastify emite pra saber q a aplicacao terminou de ser inicializada
+close - encerrar aplicacao
 
+note- tem que rodar esses testes com o container do docker rodando
 
+testes e2d sao mais arangentes, nao iremos fzr pra casos de erro pois sao pesados,
+deixamos isso pros testes unitarios msm, 
 
+________________________________________
 
+ROTAS
 
+temos apenas um arquivo de rotas. 
+todas as rotas que precisamos autenticar, precisamos passar aquele onRequest.
 
+ao separarmos as rotas, por exemplo, fzr um arquivo apenas para as rotas GYMS, 
+entao nos podemos fazer um app.addHook pro fastiify chamar aquele middleware em todas
+as rotas daquele arquivo de rotas.
 
+no arquivo de rotas de usuarios, n tem jeito, vai ter algumas rotas que nao rpecisam de
+autenticacao, como auth e session, entao n da p colocar esse addHook
 
+_______________________________
+
+o resto dos controllers 
+
+CONTROLLER DE CRIACAO DE ACADEMIA
+
+no zod, se quisermos fzr uma verificacao que nao tenha nos padroes do zod, podemos
+usar o refine, que chama uma funcao que precisa
+retornar true ou false, e nesse retorno entao a gente coloca a condicao para validar.
+No caso, isso foi feito com latitude e longitude.
+
+na chamada do use-case, nao usamos o try-catch pois nesse use-case em especifico nois nao retornamos 
+um Error especifico, entao ele vai ser pego la no handler global.
+
+outros...
+
+ -o coerce no caso, eh pq as req.querys vem como string, e o pagina deve ser um numero, entao parsea-lhei-ais
+
+- o usuario vai fazer checkin em uma academia, entao essa academia iremos pegar por parametro.
+Pelo body? Nao, vms pegar pelo params
 
 
 

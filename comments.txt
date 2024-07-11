@@ -1287,6 +1287,59 @@ outros...
 Pelo body? Nao, vms pegar pelo params
 
 
+_________________________________
+
+refresh token
+
+-sign com expiresIn com poucos dias para constantemente revalida resse token,
+que eh cchecar se existe um refresh token no contexto da aplicacao, e se sim,
+criar um novo token jwt. 
+
+no authenticcate, que eh aonde a gente cria o token, vms ccriar um novo token, 
+o refreshh token, mas vms colocar que tem uma expiracao maior, 7 dias.
+Ou seja, se ele ficcar 7 dias sem logar, entao nem o refresh token vai salvar o usuario 
+de estar autenticcado, entao vai ter que fzr logion de novo. 
+
+cuidado para nao coloccar uma data de expiracao mt longa, se nao se alguem tiver accesso
+a esse refreshToken, entao ele vai ter acesso a conta daquele usuario por muito tempo tbm
+
+O primeiro token, o jwt que o usuario usa pra autenticar, ele ficca disoponivel pro frontend, 
+fica visivel, n tem problema se alguem pegar, pq ele dura so 10 minutos.
+
+o segundo token, o refresh, a gente nao vai enviar pro frontEnd pelo reply.send, mas sim vamos
+enviar por um cookie. o bom dos ccookies eh que a gente consegue evitar ccom que esse cookie seja acessado
+no frontend. 
+
+npm i @fastify/cookie
+
+cadastrar esse cookie no app.ts
+
+ao fazer o setCcookie, nois setamos o nome do cookie e o valor dele,
+-o path, que sao quais rotas podem ter acesso a esse cookie,
+-o secure, define que o cooki seja encriptado pelo https, e o frontend
+nao consegue ler o valor de forma bruta, como string
+-samesite, cookie accessivel no mesmo dominio
+-httpOnly, o cookie so eh acessado pelo backend, e nao pelo frontend, somente
+pelo contexto da requisiccao, nao eh  salvo no frontend, no browser.
+
+no registro do jwtToken no app.ts, podemos cocloccar esse cookie como 
+signed false, pois nao estamos criando esse cookie a partir de um hashing
+pra depois validar no backend de que foi o msm backend que criou aquele hashhing.
+Nao estamos fznd isso, entao setamos como false
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

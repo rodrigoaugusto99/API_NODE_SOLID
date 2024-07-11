@@ -1327,9 +1327,28 @@ signed false, pois nao estamos criando esse cookie a partir de um hashing
 pra depois validar no backend de que foi o msm backend que criou aquele hashhing.
 Nao estamos fznd isso, entao setamos como false
 
+____________________________________
 
+implmentando o refresh token
 
+fazr uma nova rota - /token/refresh -- sem chamar o middleware de authentciacao, 
+pois essa rota eh justamente pra ser ccchamada pelo frontend quando o usuario nao
+estiver mais autenticcado, quando o token dele nao for mais valido.
 
+nessa rota, vms chamar o jwtVrify, que eh o mesmo metodo que chamamos no middlware
+pra saber se o usuario esta autenticcado, porem, com a opcao onlyCooki como true.
+
+Dessa forma, esse negoccio vai validar que o usuario esta autenticado, mas sem ver o 
+heeader, o Authorization Bearer etc, mas sim, levando em conta os ccooki.
+
+Se isso passar e nao der erro, entao ta autenticcado. Entao, prosseguindo, vamos criar
+um novo token. 
+
+vms pegar o id do usuario pelo request.user.sub, e nao pelo user.id, pois o sub agr ta disponivel
+a partir do momento que executamos o jwtVerify.
+
+Com isso, quando entao chamarmose essa rota, ela vai nos enviar de volta pelo reply.send
+um token atualizado, um novo token.
 
 
 

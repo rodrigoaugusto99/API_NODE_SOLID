@@ -1351,7 +1351,9 @@ Com isso, quando entao chamarmose essa rota, ela vai nos enviar de volta pelo re
 um token atualizado, um novo token.
 
 
+___________________________________________________
 
+controle de autorizacao baseado no cargo que o usuario tem
 
 
 
